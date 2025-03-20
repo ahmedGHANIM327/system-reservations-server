@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateReservationDto {
   @IsDate()
@@ -11,10 +11,10 @@ export class CreateReservationDto {
   endDate: Date;
 
   @IsString()
-  @Type(() => String)
+  @IsNotEmpty()
   placeId: string;
 
   @IsString()
-  @Type(() => String)
+  @IsNotEmpty()
   invoiceId: string;
 }
