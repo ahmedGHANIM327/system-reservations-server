@@ -9,3 +9,18 @@ services:
       - '3001:3001'
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules  # Prevent overwriting dependencies
+      - /usr/src/app/dist  # Prevent overwriting built files
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    ports:
+      - '3002:3001'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
