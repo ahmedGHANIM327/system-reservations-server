@@ -4,23 +4,35 @@ services:
       context: .
       dockerfile: ./apps/reservations/Dockerfile
       target: development
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://host.docker.internal:27017/system-reservations
     command: pnpm run start:dev reservations
     ports:
-      - '3001:3001'
+      - '3001:3000'
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules  # Prevent overwriting dependencies
-      - /usr/src/app/dist  # Prevent overwriting built files
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
   auth:
     build:
       context: .
       dockerfile: ./apps/auth/Dockerfile
       target: development
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://host.docker.internal:27017/system-reservations
+      JWT_SECRET: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTc0MzI1NTQ1NSwiaWF0IjoxNzQzMjU1NDU1fQ.GHM9_DKgBQ88vorfM9lWAF7HoejlxHIHLYJspYMPOVQ
+      JWT_EXPIRATION: 3600
     command: pnpm run start:dev auth
     ports:
-      - '3002:3001'
+      - '3002:3000'
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/dist
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
